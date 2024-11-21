@@ -7,6 +7,7 @@ export default function Home() {
       <TodoistClone />
         3x Comp(Items, List, FORM)
       {/* <Clone/> */}
+      
     </div>
   );
 }
