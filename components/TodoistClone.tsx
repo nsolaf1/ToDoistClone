@@ -4,21 +4,26 @@ import { useState } from "react";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 
-interface Task {
-  id: number;
-  text: string;
-  completed: boolean;
-  isEditing: boolean;
+import { todoType } from "@/types/todoType";
+
+import {
+  addTodo,
+  deleteTodo,
+  editTodo,
+  toggleTodo,
+} from "@/actions/todoAction";
+
+interface Props {
+  todos: todoType[];
 }
 
-export default function TodoistClone() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+export default function TodoistClone({ todos }: Props) {
+  const [tasks, setTasks] = useState<todoType[]>(todos);
 
   const addTask = (text: string) => {
-    setTasks([
-      ...tasks,
-      { id: Date.now(), text, completed: false, isEditing: false },
-    ]);
+    const id = (tasks.at(-1)?.id || 0) + 1;
+    setTasks([...tasks, { id: id, text, completed: false, isEditing: false }]);
+    addTodo(id, text);
   };
 
   const toggleTask = (id: number) => {
@@ -27,10 +32,12 @@ export default function TodoistClone() {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    toggleTodo(id);
   };
 
   const deleteTask = (id: number) => {
     setTasks(tasks.filter((task) => task.id !== id));
+    deleteTodo(id);
   };
 
   const editTask = (id: number, newText: string) => {
@@ -39,6 +46,7 @@ export default function TodoistClone() {
         task.id === id ? { ...task, text: newText, isEditing: false } : task
       )
     );
+    editTodo(id, newText);
   };
 
   const startEditing = (id: number) => {

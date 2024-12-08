@@ -5,11 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Menu, Plus, Search } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
-interface NavbarProps {
-  userName: string;
-}
-
-export function Navbar({ userName }: NavbarProps) {
+export function Navbar() {
   const { data: session } = useSession();
 
   return (
